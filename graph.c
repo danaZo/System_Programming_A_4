@@ -5,9 +5,9 @@
 #include "graph.h"
 #include "nodes.h"
 
-typedef struct graph
+void insert_node_cmd(pnode *head)
 {
-    pnode nodes; // node will be implemented as linked list
 
-};
+}
+
 
