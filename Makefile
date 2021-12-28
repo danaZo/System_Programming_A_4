@@ -1,4 +1,7 @@
-main: main.o nodes.o graph.o 
+clean:
+	rm -f *.o main
+
+main: main.o nodes.o graph.o
 	gcc -Wall -o main main.o nodes.o graph.o
 
 main.o: main.c graph.h nodes.h

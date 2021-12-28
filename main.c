@@ -19,40 +19,44 @@
 
 int main()
 {
-    // pnode nodes_list = NULL;       // list of nodes in a graph 
-    // char response;                 // holds the input char
-    // int index = 2;                 // index of string of specific node input
-    
-    // printf("choose action:\n"); /*DELETE LATER*/
+    pnode* head = malloc(sizeof (pnode));// list of nodes in a graph
+     if(head == NULL)
+     {
+         exit(1);
+     }
+     char response = 'y';// holds the input char
 
-    // while(response != 'E'){        // while the input char is valid
-    //     scanf("%c",&response);     // we receive the char response that will hold which case it is.
-    //     switch (response) { 
-    //         /* case A: Create a new graph */
-    //         case 'A': 
-    //             build_graph_cmd(&nodes_list);
-    //             break;
-    //         case 'B':
-    //             break;
-    //         case 'D':
-    //             break;
-    //         case 'S':
-    //             break;
-    //         case 'T':
-    //             break;    
-    //     }
-    // }
-    pnode* node_list = NULL;
-    insert_node_cmd(node_list); 
-    insert_node_cmd(node_list); 
-    pnode p1 = create_node(1);
-    pnode p2 = create_node(2);
-    pnode p3 = create_node(3);
-    add_edge(p1,p2,1);
-    add_edge(p1,p3,2);
-    p1->next = p2;
-    printf("%d\n", p1->next->node_num);
-    printf("%d\n",p1->edges->weight);
-    printf("%d\n",p1->edges->endpoint->node_num);
+    response = getc(stdin);
+    while(response != 'E'){        // while the input char is valid
+         // we receive the char response that will hold which case it is.
+         switch (response) {
+             /* case A: Create a new graph */
+             case 'A':
+                 response = build_graph_cmd(head);
+                 break;
+             case 'B':
+                 break;
+             case 'D':
+                 break;
+             case 'S':
+                 break;
+             case 'T':
+                 printf("got here");
+                 exit(1);
+                 //break;
+             default:
+                 break;
+         }
+     }
+
+//    insert_node_cmd(head,1);
+//    insert_node_cmd(head,2);
+//    insert_node_cmd(head,3);
+//    pnode p1 = *head;
+//    pnode p2 = (*head)->next;
+//    pnode p3 = (*head)->next->next;
+//    add_edge(p1,p2,1);
+//    add_edge(p1,p3,2);
+//    add_edge(p2,p3,2);
     return 0;
 }
