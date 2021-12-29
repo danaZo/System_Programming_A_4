@@ -4,8 +4,18 @@
            Input format: source node, than pairs of destination node and weight.
            This represents the edges from the source node, to destination nodes, with a given weight.
            End of this source node and a start of a new source node represented by the char 'n'.
-           We save the nodes of the graph at... , and the edges from every node we save at... */
+           We save the nodes of the graph at... , and the edges from every node we save at... 
+           
+   -CASE B: create a new node-
+            The first input number after 'B' will be the id of the new node we will create.
+            The next input number is the destination node of the edge from this node.
+            The next input number is the weight of the edge.
+            If there are more input number they come as pairs of dstination node and weight of edge.  
 
+    -CASE D: delete a node-
+            The number after 'D' is the id of the node we need to delete.      
+           */
+       
            
 /* included libraries we created */
 #include "graph.h"
@@ -32,11 +42,15 @@ int main()
          switch (response) {
              /* case A: Create a new graph */
              case 'A':
-                 response = build_graph_cmd(head);
-                 break;
+                build_graph_cmd(head);
+                break;
+             /* case B: create new node */    
              case 'B':
-                 break;
+                insert_node_cmd(head);  
+                break;
+             /* case D: delete node */   
              case 'D':
+                delete_node_cmd(head);
                  break;
              case 'S':
                  break;
