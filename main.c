@@ -37,27 +37,32 @@ int main()
      char response = 'y';// holds the input char
 
     response = getc(stdin);
+    int counter = 0;
     while(response != 'E'){        // while the input char is valid
          // we receive the char response that will hold which case it is.
          switch (response) {
              /* case A: Create a new graph */
              case 'A':
-                build_graph_cmd(head);
+                response = build_graph_cmd(head);
+                printGraph_cmd(*head);
                 break;
              /* case B: create new node */    
              case 'B':
-                insert_node_cmd(head);  
+                insert_node_cmd(head);
+                counter++;
+                 printGraph_cmd(*head);
                 break;
              /* case D: delete node */   
              case 'D':
                 delete_node_cmd(head);
+                 printGraph_cmd(*head);
                  break;
              case 'S':
                  break;
              case 'T':
-                 printf("got here");
-                 exit(1);
-                 //break;
+                 printf("got here T");
+                 //exit(1);
+                 break;
              default:
                  break;
          }

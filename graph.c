@@ -12,6 +12,25 @@
 #define True 1
 #define False 0
 
+
+void printGraph_cmd(pnode head)
+{
+    printf("\ncurrent state:\n");
+    pnode holder = head;
+    while(holder != NULL)
+    {
+        printf("%d",holder->node_num);
+        pedge p_edges = holder->edges;
+        while(p_edges != NULL)
+        {
+            printf("->%d(%d)",p_edges->endpoint->node_num,p_edges->weight);
+            p_edges = p_edges->next;
+        }
+        printf("\n");
+        holder = holder->next;
+    }
+}
+
 int checkInput(char *toCheck) {
     /*
      * this function gets a string and checks if it's a number or a char
@@ -110,12 +129,14 @@ char insert_node_cmd(pnode *head)
         {
             if ((*head)->node_num == id) 
             {
+                (*head)->edges = NULL;
                 isExist = True; // check if the node already exists 
             }
             (*head) = (*head)->next;
         }
         if ((*head)->node_num == id) // checking the last node
         {
+            (*head)->edges = NULL;
             isExist = True;
         }
         if (!isExist) // not exist
