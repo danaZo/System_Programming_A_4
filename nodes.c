@@ -10,20 +10,21 @@
 
 void add_edge(node *this, node *other, int weight)
 {
-    pedge head = this->edges;// save the edges so we don't lose them
-    while(this->edges != NULL && this->edges->next != NULL)// go over all the edge if not null, and get to the last one
+    pedge head = this->edges; // save the edges so we don't lose it
+
+    // go over all the edge and get to the last one
+    while(this->edges != NULL && this->edges->next != NULL)
     {
         this->edges = this->edges->next;
     }
-    // create new edge and allocate memory to its pointer
+    // create new edge and allocate memory to it's pointer
     pedge pe = malloc(sizeof(edge));
-
-    if(!pe)// check if the allocation was successful
+    if(!pe) // check if the allocation was successful
     {
         printf("malloc failed\n");
         exit(1);
     }
-    //change the pointer to the address of the edge
+    // change the pointer to the address of the edge
     pe->next = NULL;
     pe->weight = weight;
     pe->endpoint = other;
@@ -109,6 +110,7 @@ int factorial(int num)
     return num*factorial(num-1);
 }
 
+// doing all the possible permutations 
 int getAllPermutations(pnode head, int nodes[], int len, int start)
 {
     int permutation[len];
@@ -128,7 +130,7 @@ int getAllPermutations(pnode head, int nodes[], int len, int start)
                     if(j != i)
                     {
                         permutation[j] = nodes[j];
-                        int result = ShortestArray(head, permutation);
+                        int result = ShortestArray(head, permutation,len);
                         if(result < best)
                         {
                             best = result;
@@ -163,6 +165,123 @@ int getAllPermutations(pnode head, int nodes[], int len, int start)
                 }
             }
             break;
+        case 4:
+            for(int i =0; i < len;i++)
+            {
+                permutation[i] = nodes[i];
+                for(int j = 0; j < len; j++)
+                {
+                    if(j != i)
+                    {
+                        permutation[j] = nodes[j];
+                        for(int k =0; k < len;k++)
+                        {
+                            if(k != i && k != j)
+                            {
+                                permutation[k] = nodes[k];
+                                for(int o =0; o < len;o++)
+                                {
+                                    if (o != i && o != j && o != k)
+                                    {
+                                        permutation[o] = nodes[o];
+                                        int result = ShortestArray(head, permutation, len);
+                                        if(result < best)
+                                        {
+                                            best = result;
+                                        }
+                                    }
+                                } 
+                            }
+                        }
+                    }
+                }
+            }
+            break;
+        case 5:
+            for(int i =0; i < len;i++)
+            {
+                permutation[i] = nodes[i];
+                for(int j = 0; j < len; j++)
+                {
+                    if(j != i)
+                    {
+                        permutation[j] = nodes[j];
+                        for(int k =0; k < len;k++)
+                        {
+                            if(k != i && k != j)
+                            {
+                                permutation[k] = nodes[k];
+                                for(int o =0; o < len;o++)
+                                {
+                                    if (o != i && o != j && o != k)
+                                    {
+                                        permutation[o] = nodes[o];
+                                        for (int p = 0; p < len; p++)
+                                        {
+                                            if (p != i && p != j && p != k && p != o)
+                                            {
+                                                permutation[p] = nodes[p];
+                                                int result = ShortestArray(head, permutation, len);
+                                                if(result < best)
+                                                {
+                                                    best = result;
+                                                }
+                                            }
+                                        }
+                                    }
+                                } 
+                            }
+                        }
+                    }
+                }
+            }
+            break;
+        case 6:
+             for(int i =0; i < len;i++)
+            {
+                permutation[i] = nodes[i];
+                for(int j = 0; j < len; j++)
+                {
+                    if(j != i)
+                    {
+                        permutation[j] = nodes[j];
+                        for(int k =0; k < len;k++)
+                        {
+                            if(k != i && k != j)
+                            {
+                                permutation[k] = nodes[k];
+                                for(int o =0; o < len;o++)
+                                {
+                                    if (o != i && o != j && o != k)
+                                    {
+                                        permutation[o] = nodes[o];
+                                        for (int p = 0; p < len; p++)
+                                        {
+                                            if (p != i && p != j && p != k && p != o)
+                                            {
+                                                permutation[p] = nodes[p];
+                                                for (int h = 0; h < len; h++)
+                                                {
+                                                    if (h != i && h != j && h != k && h != o && h != p)
+                                                    {
+                                                        permutation[h] = nodes[h];
+                                                        int result = ShortestArray(head, permutation, len);
+                                                        if(result < best)
+                                                        {
+                                                            best = result;
+                                                        }
+                                                    } 
+                                                }
+                                            }
+                                        }
+                                    }
+                                } 
+                            }
+                        }
+                    }
+                }
+            }
+            break;   
         default:
             return -1;
     }

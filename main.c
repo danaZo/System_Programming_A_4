@@ -61,22 +61,11 @@ int main()
                  response  = shortsPath_cmd(*head);
                  break;
              case 'T':
-                 printf("got here T");
-                 return 0;
+                 response = TSP_cmd(head);
                  break;
              default:
                  break;
-         }
-     }
-
-//    insert_node_cmd(head,1);
-//    insert_node_cmd(head,2);
-//    insert_node_cmd(head,3);
-//    pnode p1 = *head;
-//    pnode p2 = (*head)->next;
-//    pnode p3 = (*head)->next->next;
-//    add_edge(p1,p2,1);
-//    add_edge(p1,p3,2);
-//    add_edge(p2,p3,2);
+        }
+    }
     return 0;
 }

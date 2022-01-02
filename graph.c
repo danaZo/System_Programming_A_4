@@ -440,9 +440,17 @@ char shortsPath_cmd(pnode head) {
     }
 }
 
+/*In this function we need to find the shortest path between k nodes
+  we will do all the possible permutations on the given nodes and return the 
+  permutation that gives us the shortest path.*/
 char TSP_cmd(pnode head)
 {
-    int isIn[findMaxID(head) + 1];
+    // The size of the array "isIn" is the size of the biggest id number of the nodes in the graph.
+    // First, all the indexes in the array "isIn" are 0.
+    // Afterwards, we update the value at the index number of the given id to be 1.
+    // The array "nodeIDS" holds the id numbers we receive.
+    
+    int isIn[findMaxID(head) + 1]; 
     for(int i =0; i < findMaxID(head) + 1;i++)
     {
         isIn[i] = 0;
@@ -456,6 +464,7 @@ char TSP_cmd(pnode head)
         isIn[curr] = 1;
     }
 
+    // here we save all the nodes we need to run the TSP on
     for(int i =0; i < findMaxID(head) + 1;i++)
     {
         if(isIn[i] == 1)
@@ -468,23 +477,16 @@ char TSP_cmd(pnode head)
             break;
         }
     }
-
-
-
-
     char next = getc(stdin);
     return next;
-
-
 }
 
-
+// returns array with the shortest paths between twp adjancent nodes in the nodes array
 int ShortestArray(pnode head, int *arr, int len) {
     int dist = 0;
-    for(int i =0; i < len-1;i++)
+    for(int i =0 ; i < len-1 ; i++)
     {
         dist += dijkstra(head,arr[i],arr[i+1]);
     }
     return dist;
-
 }
