@@ -8,6 +8,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdbool.h>
+#include <limits.h>
 
 #define True 1
 #define False 0
@@ -274,11 +276,11 @@ char insert_node_cmd(pnode *head)
     }
 }
 
+int numOfNodes = 0; // will hold the number of the nodes in the graph
+
 /* At this function we create the graph */
 char build_graph_cmd(pnode *head) 
 {
-    int numOfNodes = 0; // will hold the number of the nodes in the graph
-
     /* getting  the number of nodes */
     char c;
     c = getc(stdin);
@@ -391,5 +393,57 @@ void delete_node_cmd(pnode* head)
         *head = holder; // turning the head value to be the value we stored in holder
     }
 
+}
+
+int min_distance(int distance[], bool shortest_paths[])
+{
+    int min = INT_MAX, min_index;
+ 
+    for (int v = 0; v < numOfNodes; v++)
+        if (shortest_paths[v] == false && distance[v] <= min)
+            min = distance[v], min_index = v;
+ 
+    return min_index;
+}
+
+
+void dijkstra(pnode head, int src)
+{
+    int distance[numOfNodes]; //distance[i] will hold the shortest distance from src to i
+ 
+    bool shortest_path[numOfNodes]; // shortestpath[i] will be true if vertex i is included in shortest
+    // path or shortest distance from src to i is finalized
+ 
+    // Initialize all distances as INFINITE and shortest_path[] as false
+    for (int i = 0; i < numOfNodes; i++)
+        distance[i] = INT_MAX, shortest_path[i] = false;
+ 
+    // Distance of source vertex from itself is always 0
+    distance[src] = 0;
+ 
+    // Find shortest path for all vertices
+    for (int count = 0; count < numOfNodes - 1; count++) {
+        // Pick the minimum distance vertex from the set of vertices not
+        // yet processed. u is always equal to src in the first iteration.
+        int u = min_distance(distance, shortest_path);
+ 
+        // Mark the picked vertex as processed
+        shortest_path[u] = true;
+ 
+        // Update dist value of the adjacent vertices of the picked vertex.
+        for (int v = 0; v < numOfNodes; v++)
+ 
+            // Update distance[v] only if is not in shortest_path, there is an edge from
+            // u to v, and total weight of path from src to v through u is
+            // smaller than current value of distanve[v]
+            if (!shortest_path[v] && head->edges->endpoint==v && distance[u] != INT_MAX
+                && distance[u] + head->edges->endpoint==v < distance[v])
+                distance[v] = distance[u] + head->edges->endpoint==v;
+    }
+}
+/* finds the shortest path between two nodes using dijkstra algorithm */
+void shortsPath_cmd(pnode head)
+{
+    // we receive two input numbers : a source node, and a destination node
 }
 

@@ -57,6 +57,7 @@ int main()
                 delete_node_cmd(head);
                  printGraph_cmd(*head);
                  break;
+             /* case S: finds the shortest path between 2 nodes */    
              case 'S':
                  break;
              case 'T':
