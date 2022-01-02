@@ -449,8 +449,8 @@ char TSP_cmd(pnode head)
     // First, all the indexes in the array "isIn" are 0.
     // Afterwards, we update the value at the index number of the given id to be 1.
     // The array "nodeIDS" holds the id numbers we receive.
-    
-    int isIn[findMaxID(head) + 1]; 
+
+    int isIn[findMaxID(head) + 1];
     for(int i =0; i < findMaxID(head) + 1;i++)
     {
         isIn[i] = 0;
@@ -477,6 +477,8 @@ char TSP_cmd(pnode head)
             break;
         }
     }
+    int result = getAllPermutations(head,nodeIDS,numTSP);
+    printf("TSP shortest path: %d",result);
     char next = getc(stdin);
     return next;
 }

@@ -45,6 +45,7 @@ int main()
              case 'A':
                 response = build_graph_cmd(head);
                 printGraph_cmd(*head);
+                printf("finished build");
                 break;
              /* case B: create new node */    
              case 'B':
@@ -58,10 +59,11 @@ int main()
                  break;
              /* case S: finds the shortest path between 2 nodes */    
              case 'S':
-                 response  = shortsPath_cmd(*head);
+                 response = shortsPath_cmd(*head);
                  break;
              case 'T':
-                 response = TSP_cmd(head);
+                 printf("start tsp");
+                 response = TSP_cmd(*head);
                  break;
              default:
                  break;

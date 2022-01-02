@@ -24,6 +24,6 @@ void deleteGraph_cmd(pnode* head);
 char shortsPath_cmd(pnode head);
 char TSP_cmd(pnode head);
 int dijkstra(pnode head, int src, int dest);
-int ShortestArray(pnode head, int arr[], int len)
+int ShortestArray(pnode head, int *arr, int len);
 
 #endif
