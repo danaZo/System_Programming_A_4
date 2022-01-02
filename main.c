@@ -48,21 +48,21 @@ int main()
                 break;
              /* case B: create new node */    
              case 'B':
-                insert_node_cmd(head);
-                counter++;
+                insert_node_cmd(head,'B');
                  printGraph_cmd(*head);
                 break;
              /* case D: delete node */   
              case 'D':
-                delete_node_cmd(head);
+                response = delete_node_cmd(head);
                  printGraph_cmd(*head);
                  break;
              /* case S: finds the shortest path between 2 nodes */    
              case 'S':
+                 response  = shortsPath_cmd(*head);
                  break;
              case 'T':
                  printf("got here T");
-                 //exit(1);
+                 return 0;
                  break;
              default:
                  break;

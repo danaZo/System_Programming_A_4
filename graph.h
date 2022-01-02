@@ -17,11 +17,13 @@ typedef struct GRAPH_NODE_ {
 } node, *pnode;
 
 char build_graph_cmd(pnode* head);
-char insert_node_cmd(pnode* head);
-void delete_node_cmd(pnode* head);
+char insert_node_cmd(pnode* head, char from);
+char delete_node_cmd(pnode* head);
 void printGraph_cmd(pnode head); //for self debug
 void deleteGraph_cmd(pnode* head);
-void shortsPath_cmd(pnode head);
-void TSP_cmd(pnode head);
+char shortsPath_cmd(pnode head);
+char TSP_cmd(pnode head);
+int dijkstra(pnode head, int src, int dest);
+int ShortestArray(pnode head, int arr[], int len)
 
 #endif
