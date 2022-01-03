@@ -6,4 +6,4 @@ pedge getEdge(pnode src, int dest);
 pnode getNode(pnode head, int id);
 void removeEdge(pnode src, int dest);
 int findMaxID(pnode head);
-int getAllPermutations(pnode head, int *nodes, int len);
+int getAllPermutations(pnode head, const int *nodes, int len);

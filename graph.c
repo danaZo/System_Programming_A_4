@@ -21,7 +21,9 @@ int getIntFromStringInput() {
     char *numStr = (char *) malloc(sizeof(char) * 10);
     int i = 0;
     current = getc(stdin);
-
+    if (current == ' ' || current == '\n') {
+        current = getc(stdin);
+    }
     // while we didn't receive empty char (space or enter) we add the char (or chars)
     // that we receive from the keyboard
     while (current != ' ' && current != '\n') {
@@ -41,6 +43,7 @@ int getIntFromStringInput() {
         finalNum += numStr[i] - 48; // ascii value of '0' is 48
     }
     free(numStr); // free the memory we used
+
     return finalNum;
 }
 
@@ -77,9 +80,13 @@ int checkInput(char *toCheck) {
 }
 
 /* Function to insret a new node to the graph */
-char insert_node_cmd(pnode *head,char from) {
+char insert_node_cmd(pnode *head, char from) {
     int id = 0;
     char *idString = (char *) malloc(10); // string
+    if(idString == NULL)
+    {
+        exit(1);
+    }
     int isExist = 0;
 
 
@@ -98,7 +105,7 @@ char insert_node_cmd(pnode *head,char from) {
 
 
     while (c != ' ' && c != '\n') {
-        idString[counter] = c;
+        *(idString+counter) = c;
         counter++;
         c = getc(stdin);
     }
@@ -113,14 +120,14 @@ char insert_node_cmd(pnode *head,char from) {
     free(idString);
 
 
+
     /* At this code block we check if the node with the id we got
        already exists in the nodes list of this graph.
        If not -> we create one with this id and insert it to the list. */
 
-    pnode new_node_p;
     if (*head == NULL) // there is no head -> list is empty
     {
-        new_node_p = malloc(sizeof(node)); // new nodes list
+        pnode new_node_p = (pnode)malloc(sizeof(node)); // new nodes list
         if (new_node_p == NULL) {
             exit(1);
         }
@@ -130,10 +137,11 @@ char insert_node_cmd(pnode *head,char from) {
         new_node_p->node_num = id;
 
         // allocating memory to the pointer of head pointer that points at the head node
-        *head = malloc(sizeof(pnode));
-        if (*head == NULL) {
-            exit(1);
-        }
+//        *head = malloc(sizeof(pnode));
+//        printf("malloc\n");
+//        if (*head == NULL) {
+//            exit(1);
+//        }
 
         // the pointer to the head receives the value of the pointer to the new node (source node)
         *head = new_node_p;
@@ -158,7 +166,8 @@ char insert_node_cmd(pnode *head,char from) {
         if (!isExist) // not exist
         {
             // creating new node
-            new_node_p = malloc(sizeof(node));
+
+            pnode new_node_p = (pnode)malloc(sizeof(node));
             if (new_node_p == NULL) {
                 exit(1);
             }
@@ -166,8 +175,7 @@ char insert_node_cmd(pnode *head,char from) {
             new_node_p->next = NULL;
             new_node_p->edges = NULL;
             new_node_p->node_num = id;
-            if(from == 'B')
-            {
+            if (from == 'B') {
                 numOfNodes++;
             }
             (*head)->next = new_node_p;
@@ -196,7 +204,7 @@ char insert_node_cmd(pnode *head,char from) {
 
         //  while we didn't receive empty char (space or enter)
         while (current != ' ' && current != '\n') {
-            toCheck[counter] = current;
+            *(toCheck+counter) = current;
             current = getc(stdin);
             counter++;
         }
@@ -210,13 +218,13 @@ char insert_node_cmd(pnode *head,char from) {
                 num *= 10;
                 num += toCheck[i] - 48; // 48 is the ascii value of the char '0'
             }
-
             free(toCheck); // we done with this string so we free the memory it used
             destNode = num; // destination node
         } else // go back if char
         {
             current = toCheck[0];
             free(toCheck);
+
             return current;
         }
 
@@ -234,14 +242,14 @@ char insert_node_cmd(pnode *head,char from) {
         }
         if (!isExist) // we don't have this node, so we create new node 
         {
-            new_node_p = malloc(sizeof(node));
+            pnode new_node_p = malloc(sizeof(node));
             if (new_node_p == NULL) {
                 exit(1);
             }
             new_node_p->next = NULL;
             new_node_p->edges = NULL;
             new_node_p->node_num = destNode;
-            if(from == 'B'){
+            if (from == 'B') {
                 numOfNodes++;
             }
             (*head)->next = new_node_p;
@@ -252,10 +260,9 @@ char insert_node_cmd(pnode *head,char from) {
         counter = 0;
         current = getc(stdin);
         char *weightString = (char *) malloc(10);
-
         // while we didn't receive empty char (space or enter)
         while (current != ' ' && current != '\n') {
-            weightString[counter] = current;
+            *(weightString+counter) = current;
             counter++;
             current = getc(stdin);
         }
@@ -264,6 +271,7 @@ char insert_node_cmd(pnode *head,char from) {
             weight *= 10;
             weight += weightString[i] - 48; // 48 is the ascii value of the char '0'
         }
+        free(weightString);
         pnode src;
         pnode dest;
         pnode temp = *head;
@@ -311,7 +319,7 @@ char build_graph_cmd(pnode *head) {
         numOfNodes *= 10;
         numOfNodes += numString[i] - 48; // 48 is the ascii value of the char '0'
     }
-
+    free(numString);
     // Here we go over the input and create what is needed until we get nothing.
     int n_counter = 0; // counts the number of the char 'n' we received
     counter = 0;
@@ -321,15 +329,13 @@ char build_graph_cmd(pnode *head) {
     while (n_counter != numOfNodes) {
         if (c == 'n') {
             n_counter++;
-            c = insert_node_cmd(head,'A');
+            c = insert_node_cmd(head, 'A');
         } else {
             return c;
         }
     }
     return c;
 }
-
-
 
 
 /* At this function we delete a node and all the edges that connected to it */
@@ -344,21 +350,21 @@ char delete_node_cmd(pnode *head) {
     // note: we need to free space of every edge we delete.
     // Second, we need to delete the edges from the node itself.
     // Third, we need to delete the node itself. free the space of the node.
-    while(temp != NULL){
-        if(temp->next != NULL && temp->next->node_num == node_to_del)
-        {
+    while (temp != NULL) {
+        if (temp->next != NULL && temp->next->node_num == node_to_del) {
             temp->next = temp->next->next;
         }
         removeEdge(temp, node_to_del);
         temp = temp->next;
     }
-    while(toDelete->edges != NULL)
-    {
+    while (toDelete->edges != NULL) {
         pedge currEdge = toDelete->edges;
         toDelete->edges = currEdge->next;
         free(currEdge);
+
     }
     free(toDelete);
+
 
 
     char next = getc(stdin);
@@ -372,42 +378,45 @@ int min_distance(int distance[], bool shortest_paths[]) {
     for (int v = 0; v < numOfNodes; v++)
         if (shortest_paths[v] == false && distance[v] <= min)
             min = distance[v], min_index = v;
-
+    if (min == INT_MAX) {
+        return -1;
+    }
     return min_index;
 }
 
 
 int dijkstra(pnode head, int src, int dest) {
-    int distance[findMaxID(head)]; //distance[i] will hold the shortest distance from src to i
+    int distance[findMaxID(head) + 1]; //distance[i] will hold the shortest distance from src to i
 
-    bool shortest_path[findMaxID(head)]; // shortestpath[i] will be true if vertex i is included in shortest
+    bool shortest_path[findMaxID(head) + 1]; // shortestpath[i] will be true if vertex i is included in shortest
     // path or shortest distance from src to i is finalized
 
     // Initialize all distances as INFINITE and shortest_path[] as false
-    for (int i = 0; i < findMaxID(head); i++)
+    for (int i = 0; i < findMaxID(head) + 1; i++)
         distance[i] = INT_MAX, shortest_path[i] = false;
 
     // Distance of source vertex from itself is always 0
     distance[src] = 0;
 
     // Find shortest path for all vertices
-    for (int count = 0; count < numOfNodes - 1; count++) {
+    for (int count = 0; count < findMaxID(head); count++) {
         // Pick the minimum distance vertex from the set of vertices not
         // yet processed. u is always equal to src in the first iteration.
         int u = min_distance(distance, shortest_path);
-
+        if (u == -1) {
+            break;
+        }
         // Mark the picked vertex as processed
         shortest_path[u] = true;
         pnode source = getNode(head, u);
         // Update dist value of the adjacent vertices of the picked vertex.
-        for (int v = 0; v < numOfNodes; v++)
-        {
+        for (int v = 0; v < findMaxID(head) + 1; v++) {
             pedge currEdge = getEdge(source, v);
 
             // Update distance[v] only if is not in shortest_path, there is an edge from
             // u to v, and total weight of path from src to v through u is
             // smaller than current value of distance[v]
-                if( !shortest_path[v] && currEdge != NULL && distance[u] + currEdge->weight < distance[v]){
+            if (!shortest_path[v] && currEdge != NULL && distance[u] + currEdge->weight < distance[v]) {
                 distance[v] = distance[u] + currEdge->weight;
             }
         }
@@ -423,62 +432,48 @@ char shortsPath_cmd(pnode head) {
     int firstNum = getIntFromStringInput();
     int secondNum = getIntFromStringInput();
 
-    int dist = dijkstra(head, firstNum,secondNum);
-    if(dist != INT_MAX){
-        printf("Dijsktra shortest path: %d", dist);
-    }
-    else{
+    int dist = dijkstra(head, firstNum, secondNum);
+    if (dist != INT_MAX) {
+        printf("Dijsktra shortest path: %d \n", dist);
+    } else {
         printf("-1");
     }
     char next = getc(stdin);
-    if(next == EOF){
-        exit(1);
-    }
-    else
-    {
-        return next;
-    }
+    return next;
 }
 
 /*In this function we need to find the shortest path between k nodes
   we will do all the possible permutations on the given nodes and return the 
   permutation that gives us the shortest path.*/
-char TSP_cmd(pnode head)
-{
+char TSP_cmd(pnode head) {
     // The size of the array "isIn" is the size of the biggest id number of the nodes in the graph.
     // First, all the indexes in the array "isIn" are 0.
     // Afterwards, we update the value at the index number of the given id to be 1.
     // The array "nodeIDS" holds the id numbers we receive.
 
     int isIn[findMaxID(head) + 1];
-    for(int i =0; i < findMaxID(head) + 1;i++)
-    {
+    for (int i = 0; i < findMaxID(head) + 1; i++) {
         isIn[i] = 0;
     }
     int numTSP = getIntFromStringInput();
     int nodeIDS[numTSP];
     int counter = 0;
-    for(int i =0; i < numTSP;i++)
-    {
+    for (int i = 0; i < numTSP; i++) {
         int curr = getIntFromStringInput();
         isIn[curr] = 1;
     }
 
     // here we save all the nodes we need to run the TSP on
-    for(int i =0; i < findMaxID(head) + 1;i++)
-    {
-        if(isIn[i] == 1)
-        {
+    for (int i = 0; i < findMaxID(head) + 1; i++) {
+        if (isIn[i] == 1) {
             nodeIDS[counter] = i;
             counter++;
         }
-        if(counter == numTSP)
-        {
+        if (counter == numTSP) {
             break;
         }
     }
-    int result = getAllPermutations(head,nodeIDS,numTSP);
-    printf("TSP shortest path: %d",result);
+    getAllPermutations(head, nodeIDS, numTSP);
     char next = getc(stdin);
     return next;
 }
@@ -486,9 +481,62 @@ char TSP_cmd(pnode head)
 // returns array with the shortest paths between twp adjancent nodes in the nodes array
 int ShortestArray(pnode head, int *arr, int len) {
     int dist = 0;
-    for(int i =0 ; i < len-1 ; i++)
-    {
-        dist += dijkstra(head,arr[i],arr[i+1]);
+    int curr = 0;
+    for (int i = 0; i < len - 1; i++) {
+        curr = dijkstra(head, arr[i], arr[i + 1]);
+        if (curr == INT_MAX) {
+            return -1;
+        }
+        dist += curr;
     }
     return dist;
+}
+
+void deleteNode(pnode head, int id) {
+    int node_to_del = id;
+
+    pnode temp = head;
+    pnode toDelete = getNode(head, node_to_del);
+
+    // STEPS:
+    // First, we need to check if there are edges that goes to the node to delete.
+    // note: we need to free space of every edge we delete.
+    // Second, we need to delete the edges from the node itself.
+    // Third, we need to delete the node itself. free the space of the node.
+    while (temp != NULL) {
+        if (temp->next != NULL && temp->next->node_num == node_to_del) {
+            temp->next = temp->next->next;
+        }
+        removeEdge(temp, node_to_del);
+        temp = temp->next;
+    }
+    while (toDelete->edges != NULL) {
+        pedge currEdge = toDelete->edges;
+        toDelete->edges = currEdge->next;
+        free(currEdge);
+
+    }
+    free(toDelete);
+
+
+
+}
+
+void deleteGraph_cmd(pnode *head) {
+
+    pnode temp = *head;
+    if (*head == NULL) {
+        return;
+    }
+    while (temp->next != NULL) {
+        deleteNode(temp, temp->next->node_num);
+    }
+    while(temp->edges != NULL){
+        pedge next = temp->edges->next;
+        removeEdge(temp,temp->edges->endpoint->node_num);
+        temp->edges = next;
+    }
+    *head = NULL;
+    free(temp);
+    free(head);
 }
