@@ -35,7 +35,7 @@ int main() {
     *head = NULL;
     char response = 'y';// holds the input char
 
-    response = getc(stdin);
+    scanf("%c",&response);
     while (1) {        // while the input char is valid
         // we receive the char response that will hold which case it is.
         switch (response) {
@@ -58,10 +58,10 @@ int main() {
             case 'T':
                 response = TSP_cmd(*head);
                 break;
-            case 'E':
+            case EOF:
                 deleteGraph_cmd(head);
                 return 0;
-            case EOF:
+            case '\n':
                 deleteGraph_cmd(head);
                 return 0;
             default:

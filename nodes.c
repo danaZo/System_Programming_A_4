@@ -63,6 +63,8 @@ void removeEdge(pnode src, int dest) {
         pedge edges = src->edges;
         if (src->edges->endpoint->node_num == dest) {
             src->edges = toRemove->next;
+            toRemove->next = NULL;
+            toRemove->endpoint = NULL;
             free(toRemove);
             toRemove = NULL;
             return;
@@ -71,6 +73,8 @@ void removeEdge(pnode src, int dest) {
             edges = edges->next;
         }
         edges->next = toRemove->next;
+        toRemove->next = NULL;
+        toRemove->endpoint = NULL;
         free(toRemove);
         toRemove = NULL;
     }
@@ -95,9 +99,22 @@ int factorial(int num) {
     return num * factorial(num - 1);
 }
 
+int checkAllResults(const int* arr, int len)
+{
+    for(int i =0; i < len;i++)
+    {
+        if(arr[i] != -1)
+        {
+            return 1;
+        }
+    }
+    return 0;
+}
+
  //doing all the possible permutations
 int getAllPermutations(pnode head, const int *nodes, int len) {
     int counter = 0;
+    int check = 0;
     int permutation[len];
     int best = INT_MAX;
     int results[factorial(len)];
@@ -112,11 +129,18 @@ int getAllPermutations(pnode head, const int *nodes, int len) {
                     if (j != i) {
                         permutation[1] = nodes[j];
                         int result = ShortestArray(head, permutation, len);
-                        if (result < best) {
+                        results[counter] = result;
+                        counter++;
+                        if (result != -1 && result < best) {
                             best = result;
                         }
                     }
                 }
+            }
+            check = checkAllResults(results, factorial(len));
+            if(check == 0)
+            {
+                best = -1;
             }
             printf("TSP shortest path: %d \n", best);
             return best;
@@ -141,6 +165,11 @@ int getAllPermutations(pnode head, const int *nodes, int len) {
                     }
                 }
             }
+            check = checkAllResults(results, factorial(len));
+            if(check == 0)
+            {
+                best = -1;
+            }
             printf("TSP shortest path: %d \n", best);
             return best;
         case 4:
@@ -156,7 +185,9 @@ int getAllPermutations(pnode head, const int *nodes, int len) {
                                     if (o != i && o != j && o != k) {
                                         permutation[3] = nodes[o];
                                         int result = ShortestArray(head, permutation, len);
-                                        if (result < best) {
+                                        results[counter] = result;
+                                        counter++;
+                                        if (result != -1 && result < best) {
                                             best = result;
                                         }
                                     }
@@ -166,8 +197,12 @@ int getAllPermutations(pnode head, const int *nodes, int len) {
                     }
                 }
             }
+            check = checkAllResults(results, factorial(len));
+            if(check == 0)
+            {
+                best = -1;
+            }
             printf("TSP shortest path: %d \n", best);
-
             return best;
         case 5:
             for (int i = 0; i < len; i++) {
@@ -185,7 +220,9 @@ int getAllPermutations(pnode head, const int *nodes, int len) {
                                             if (p != i && p != j && p != k && p != o) {
                                                 permutation[4] = nodes[p];
                                                 int result = ShortestArray(head, permutation, len);
-                                                if (result < best) {
+                                                results[counter] = result;
+                                                counter++;
+                                                if (result != -1 && result < best) {
                                                     best = result;
                                                 }
                                             }
@@ -197,8 +234,12 @@ int getAllPermutations(pnode head, const int *nodes, int len) {
                     }
                 }
             }
+            check = checkAllResults(results, factorial(len));
+            if(check == 0)
+            {
+                best = -1;
+            }
             printf("TSP shortest path: %d \n", best);
-
             return best;
         case 6:
             for (int i = 0; i < len; i++) {
@@ -219,7 +260,9 @@ int getAllPermutations(pnode head, const int *nodes, int len) {
                                                     if (h != i && h != j && h != k && h != o && h != p) {
                                                         permutation[5] = nodes[h];
                                                         int result = ShortestArray(head, permutation, len);
-                                                        if (result < best) {
+                                                        results[counter] = result;
+                                                        counter++;
+                                                        if (result != -1 && result < best) {
                                                             best = result;
                                                         }
                                                     }
@@ -232,6 +275,11 @@ int getAllPermutations(pnode head, const int *nodes, int len) {
                         }
                     }
                 }
+            }
+            check = checkAllResults(results, factorial(len));
+            if(check == 0)
+            {
+                best = -1;
             }
             printf("TSP shortest path: %d \n", best);
             return best;
