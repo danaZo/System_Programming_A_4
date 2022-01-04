@@ -28,10 +28,11 @@
 
 
 int main() {
-    pnode *head = (pnode *) malloc(sizeof(pnode));// list of nodes in a graph
+    pnode* head = (pnode *) malloc(sizeof(pnode));// list of nodes in a graph
     if (head == NULL) {
         exit(1);
     }
+    *head = NULL;
     char response = 'y';// holds the input char
 
     response = getc(stdin);
@@ -44,7 +45,7 @@ int main() {
                 break;
                 /* case B: create new node */
             case 'B':
-                insert_node_cmd(head, 'B');
+                response = insert_node_cmd(head, 'B');
                 break;
                 /* case D: delete node */
             case 'D':

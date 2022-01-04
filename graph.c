@@ -19,6 +19,10 @@ int numOfNodes = 0; // will hold the number of the nodes in the graph
 int getIntFromStringInput() {
     char current;
     char *numStr = (char *) malloc(sizeof(char) * 10);
+    if(numStr == NULL)
+    {
+        exit(1);
+    }
     int i = 0;
     current = getc(stdin);
     if (current == ' ' || current == '\n') {
@@ -82,7 +86,7 @@ int checkInput(char *toCheck) {
 /* Function to insret a new node to the graph */
 char insert_node_cmd(pnode *head, char from) {
     int id = 0;
-    char *idString = (char *) malloc(10); // string
+    char *idString = (char *) malloc((sizeof(char) * 10 )+ 1); // string
     if(idString == NULL)
     {
         exit(1);
@@ -191,7 +195,7 @@ char insert_node_cmd(pnode *head, char from) {
         isExist = False;
         int destNode = 0;
         int weight = 0;
-        char *toCheck = (char *) malloc(10);
+        char *toCheck = (char *) malloc((sizeof(char) * 10 )+ 1);
         if (toCheck == NULL) {
             exit(1);
         }
@@ -207,6 +211,12 @@ char insert_node_cmd(pnode *head, char from) {
             *(toCheck+counter) = current;
             current = getc(stdin);
             counter++;
+        }
+
+        if(current == EOF || current == 'E')
+        {
+            free(toCheck);
+            return EOF;
         }
 
         toCheck[counter] = '\0'; // end of string
@@ -242,7 +252,7 @@ char insert_node_cmd(pnode *head, char from) {
         }
         if (!isExist) // we don't have this node, so we create new node 
         {
-            pnode new_node_p = malloc(sizeof(node));
+            pnode new_node_p = (pnode)malloc(sizeof(node));
             if (new_node_p == NULL) {
                 exit(1);
             }
@@ -259,10 +269,14 @@ char insert_node_cmd(pnode *head, char from) {
         // At this block we will get the weight of the edge, find the 2 nodes of the edge and create the edge.
         counter = 0;
         current = getc(stdin);
-        char *weightString = (char *) malloc(10);
+        char *weightString = (char *) malloc((sizeof(char) * 10 )+ 1);
+        if(weightString == NULL)
+        {
+            exit(1);
+        }
         // while we didn't receive empty char (space or enter)
         while (current != ' ' && current != '\n') {
-            *(weightString+counter) = current;
+            weightString[counter] = current;
             counter++;
             current = getc(stdin);
         }
@@ -300,7 +314,7 @@ char build_graph_cmd(pnode *head) {
     char c;
     c = getc(stdin);
     c = 'a';
-    char *numString = (char *) malloc(10);
+    char *numString = (char *) malloc((sizeof(char) * 10 )+ 1);
     if (numString == NULL) {
         exit(1);
     }

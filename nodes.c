@@ -17,7 +17,6 @@ void add_edge(node *this, node *other, int weight) {
     }
     // create new edge and allocate memory to it's pointer
     pedge pe = (pedge)malloc(sizeof(edge));
-    printf("malloc\n");
     if (!pe) // check if the allocation was successful
     {
         exit(1);
@@ -65,7 +64,7 @@ void removeEdge(pnode src, int dest) {
         if (src->edges->endpoint->node_num == dest) {
             src->edges = toRemove->next;
             free(toRemove);
-            printf("free\n");
+            toRemove = NULL;
             return;
         }
         while (edges->next->endpoint->node_num != dest) {
@@ -73,7 +72,7 @@ void removeEdge(pnode src, int dest) {
         }
         edges->next = toRemove->next;
         free(toRemove);
-        printf("free\n");
+        toRemove = NULL;
     }
 }
 
