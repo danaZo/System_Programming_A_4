@@ -1,7 +1,9 @@
 clean:
 	rm -f *.o main
 
-main: main.o nodes.o graph.o
+all: graph
+
+graph: main.o nodes.o graph.o
 	gcc -Wall -g -o main main.o nodes.o graph.o
 
 main.o: main.c graph.h nodes.h
